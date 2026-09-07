@@ -1,0 +1,114 @@
+---
+title: "markdown practice"
+author: "Estiaque"
+date: "2026-09-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Historical CO2 Analysis
+
+## Introduction
+
+Atmospheric **carbon dioxide (CO~2~)** concentration is an important measure of environmental change. In this exercise, I use the `historic_co2` dataset from the *dslabs* package.
+
+The objective is to examine historical CO~2~ concentrations and convert the original measurement from **parts per million (ppm)** to **parts per billion (ppb)**.
+
+***
+
+## Load the Data
+
+First, I load the required package and dataset.
+
+```{r load-data}
+pacman::p_load(dslabs, ggplot2)
+
+data(historic_co2)
+```
+
+## Examine the Data
+
+I first examine the names and first few observations of the dataset.
+
+```{r examine-data}
+names(historic_co2)
+
+head(historic_co2)
+
+summary(historic_co2)
+```
+
+## Data Preparation
+
+The original variable `co2` measures CO~2~ concentration in ppm. I rename this variable `co2_ppm`.
+
+```{r rename-variable}
+names(historic_co2)[names(historic_co2) == "co2"] <- "co2_ppm"
+```
+
+Because **1 ppm = 1,000 ppb**, I create a new variable called `co2_ppb`.
+
+```{r create-variable}
+historic_co2$co2_ppb <- historic_co2$co2_ppm * 1000
+
+head(historic_co2)
+```
+
+The mathematical relationship is
+
+$$
+CO_{2,ppb}=CO_{2,ppm}\times 1000.
+$$
+
+## Variable Description
+
+| Variable | Description | Unit |
+|:---------|:-----------:|-----:|
+| `year` | Observation year | Year |
+| `co2_ppm` | CO~2~ concentration | ppm |
+| `co2_ppb` | CO~2~ concentration | ppb |
+
+## Summary Statistics
+
+I calculate several descriptive statistics for atmospheric CO~2~ concentration.
+
+```{r summary-statistics}
+mean(historic_co2$co2_ppm)
+
+median(historic_co2$co2_ppm)
+
+sd(historic_co2$co2_ppm)
+
+min(historic_co2$co2_ppm)
+
+max(historic_co2$co2_ppm)
+```
+
+## CO~2~ Concentration Over Time
+
+The following figure shows the historical evolution of atmospheric CO~2~ concentration.
+
+```{r co2-graph}
+ggplot(historic_co2, aes(x = year, y = co2_ppm)) +
+  geom_line(linewidth = 1) +
+  labs(
+    title = "Historical Atmospheric CO2 Concentration",
+    x = "Year",
+    y = "CO2 Concentration (ppm)",
+    caption = "Source: dslabs"
+  ) +
+  theme_minimal()
+```
+
+## Conclusion
+
+The analysis shows how **R Markdown** can combine *written analysis*, `R commands`, mathematical notation, tables, statistical results, and figures in one document.
+
+~~R code and written analysis must be kept in separate files.~~
+
+Instead, they can be combined in a single reproducible `.Rmd` document.
+
+***
