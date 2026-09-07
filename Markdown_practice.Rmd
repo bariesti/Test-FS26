@@ -103,6 +103,34 @@ ggplot(historic_co2, aes(x = year, y = co2_ppm)) +
   theme_minimal()
 ```
 
+## Summary Statistics
+
+The following table reports descriptive statistics for atmospheric CO~2~ concentration.
+
+```{r summary-table}
+summary_table <- data.frame(
+  Statistic = c("Mean", "Median", "Standard Deviation", "Minimum", "Maximum"),
+  CO2_ppm = c(
+    mean(historic_co2$co2_ppm),
+    median(historic_co2$co2_ppm),
+    sd(historic_co2$co2_ppm),
+    min(historic_co2$co2_ppm),
+    max(historic_co2$co2_ppm)
+  )
+)
+
+knitr::kable(
+  summary_table,
+  digits = 2,
+  col.names = c("Statistic", "CO2 (ppm)"),
+  caption = "Summary Statistics for Atmospheric CO2"
+)
+```
+
+
+
+
+
 ## Conclusion
 
 The analysis shows how **R Markdown** can combine *written analysis*, `R commands`, mathematical notation, tables, statistical results, and figures in one document.
